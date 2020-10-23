@@ -92,8 +92,9 @@ class JSPacker {
         /// return result
         return payload;
       }
-    } catch (e) {
-      print(e);
+      return null;
+    } catch (_) {
+      return null;
     }
   }
 }
