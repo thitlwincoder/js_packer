@@ -1,6 +1,6 @@
 name: js_packer
 description: First Dart Package for decode Dean Edwards' JavaScript Packer.
-version: 0.0.2
+version: 0.0.3
 author: Thit Lwin <thitlwincoder@gmail.com>
 homepage: https://github.com/thitlwincoder/js_packer
 

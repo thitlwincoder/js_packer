@@ -37,18 +37,22 @@ class JSPacker {
         List sym = matches.group(4).split("\|");
 
         /// initial value
-        int radix = 36;
-        int count = 0;
+        int radix;
+        int count;
 
         /// set radix value
         try {
           radix = int.parse(radixStr);
-        } catch (e) {}
+        } catch (_) {
+          radix = 36;
+        }
 
         /// set count value
         try {
           count = int.parse(countStr);
-        } catch (e) {}
+        } catch (_) {
+          count = 0;
+        }
 
         /// error condition
         if (sym.length != count) {
