@@ -11,8 +11,8 @@ class JSPacker {
 
   /// detect code has match
   bool detect() {
-    String js = packedJS.replaceAll(" ", "");
-    RegExp exp = RegExp("eval\\(function\\(p,a,c,k,e,(?:r|d)");
+    var js = packedJS.replaceAll(' ', '');
+    var exp = RegExp('eval\\(function\\(p,a,c,k,e,(?:r|d)');
     return exp.hasMatch(js);
   }
 
@@ -20,7 +20,7 @@ class JSPacker {
   String unpack() {
     try {
       /// pattern
-      RegExp exp = RegExp(
+      var exp = RegExp(
         "\\}\\s*\\('(.*)',\\s*(.*?),\\s*(\\d+),\\s*'(.*?)'\\.split\\('\\|'\\)",
         dotAll: true,
       );
@@ -31,10 +31,10 @@ class JSPacker {
       /// if group count is 4
       if (matches.groupCount == 4) {
         /// get value with group
-        String payload = matches.group(1).replaceAll("\\'", "\'");
-        String radixStr = matches.group(2);
-        String countStr = matches.group(3);
-        List sym = matches.group(4).split("\|");
+        var payload = matches.group(1).replaceAll("\\'", "\'");
+        var radixStr = matches.group(2);
+        var countStr = matches.group(3);
+        List sym = matches.group(4).split('\|');
 
         /// initial value
         int radix;
@@ -56,37 +56,37 @@ class JSPacker {
 
         /// error condition
         if (sym.length != count) {
-          throw new Exception("Unknown p.a.c.k.e.r. encoding");
+          throw Exception('Unknown p.a.c.k.e.r. encoding');
         }
 
         /// call UnBase class
-        UnBase unBase = new UnBase(radix);
+        var unBase = UnBase(radix);
 
         /// Pattern
-        exp = RegExp("\\b\\w+\\b");
+        exp = RegExp('\\b\\w+\\b');
 
         /// get value from elementAt 0
         matches = exp.allMatches(payload).elementAt(0);
 
         /// initial value
-        int replaceOffset = 0;
+        var replaceOffset = 0;
 
         /// foreach looping
         exp.allMatches(payload).forEach((element) {
           /// get word from group 0
-          String word = element.group(0);
+          var word = element.group(0);
 
           String value;
 
           /// change code to value
-          int x = unBase.unBase(word);
+          var x = unBase.unBase(word);
 
           /// set value
           if (x < sym.length) {
             value = sym[x];
           }
 
-          if (value != null && value.length > 0) {
+          if (value != null && value.isNotEmpty) {
             payload = payload.replaceRange(element.start + replaceOffset,
                 element.end + replaceOffset, value);
             replaceOffset += value.length - word.length;
@@ -106,7 +106,7 @@ class JSPacker {
 /// UnBase Class
 class UnBase {
   final String alpha_62 =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   final String alpha_95 =
       " !\"#\$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
   String alphabet;
@@ -117,15 +117,15 @@ class UnBase {
     this.radix = radix;
 
     if (radix > 36) {
-      if (radix < 62)
+      if (radix < 62) {
         alphabet = alpha_62.substring(0, radix);
-      else if (radix > 62 && radix < 95)
+      } else if (radix > 62 && radix < 95) {
         alphabet = alpha_95.substring(0, radix);
-      else if (radix == 62)
+      } else if (radix == 62) {
         alphabet = alpha_62;
-      else if (radix == 95) alphabet = alpha_95;
+      } else if (radix == 95) alphabet = alpha_95;
 
-      for (int i = 0; i < alphabet.length; i++) {
+      for (var i = 0; i < alphabet.length; i++) {
         dictionary[alphabet.substring(i, i + 1)] = i;
       }
     }
@@ -133,12 +133,12 @@ class UnBase {
 
   /// change code to value
   int unBase(String str) {
-    int ret = 0;
+    var ret = 0;
 
     if (alphabet == null) {
       ret = int.parse(str, radix: radix);
     } else {
-      for (int i = 0; i < str.length; i++) {
+      for (var i = 0; i < str.length; i++) {
         ret += pow(radix, i) * dictionary[str.substring(i, i + 1)];
       }
     }

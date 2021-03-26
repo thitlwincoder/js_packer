@@ -25,6 +25,7 @@ jsPacker.unpack()
 ### Example
 
 ```dart
+
 JSPacker jsPacker = JSPacker(eval); // add your value
 
 if (jsPacker.detect()) {

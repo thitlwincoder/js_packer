@@ -1,3 +1,3 @@
-## [0.0.3] - 2020-10-23
+## [0.0.4] - 2021-03-26
 
-Initial Version of the library.
+Update code & Clean bugs.
