@@ -11,13 +11,13 @@ class JSPacker {
 
   /// detect code has match
   bool detect() {
-    var js = packedJS.replaceAll(' ', '');
-    var exp = RegExp('eval\\(function\\(p,a,c,k,e,(?:r|d)');
+    final js = packedJS.replaceAll(' ', '');
+    final exp = RegExp('eval\\(function\\(p,a,c,k,e,(?:r|d)');
     return exp.hasMatch(js);
   }
 
   /// change code to value
-  String unpack() {
+  String? unpack() {
     try {
       /// pattern
       var exp = RegExp(
@@ -31,10 +31,10 @@ class JSPacker {
       /// if group count is 4
       if (matches.groupCount == 4) {
         /// get value with group
-        var payload = matches.group(1).replaceAll("\\'", "\'");
-        var radixStr = matches.group(2);
-        var countStr = matches.group(3);
-        List sym = matches.group(4).split('\|');
+        var payload = matches.group(1)!.replaceAll("\\'", "\'");
+        final radixStr = matches.group(2);
+        final countStr = matches.group(3);
+        final sym = matches.group(4)!.split('\|');
 
         /// initial value
         int radix;
@@ -42,14 +42,14 @@ class JSPacker {
 
         /// set radix value
         try {
-          radix = int.parse(radixStr);
+          radix = int.parse(radixStr!);
         } catch (_) {
           radix = 36;
         }
 
         /// set count value
         try {
-          count = int.parse(countStr);
+          count = int.parse(countStr!);
         } catch (_) {
           count = 0;
         }
@@ -60,7 +60,7 @@ class JSPacker {
         }
 
         /// call UnBase class
-        var unBase = UnBase(radix);
+        final unBase = UnBase(radix);
 
         /// Pattern
         exp = RegExp('\\b\\w+\\b');
@@ -74,19 +74,19 @@ class JSPacker {
         /// foreach looping
         exp.allMatches(payload).forEach((element) {
           /// get word from group 0
-          var word = element.group(0);
+          final word = element.group(0);
 
-          String value;
+          var value = '';
 
           /// change code to value
-          var x = unBase.unBase(word);
+          final x = unBase.unBase(word!);
 
           /// set value
           if (x < sym.length) {
             value = sym[x];
           }
 
-          if (value != null && value.isNotEmpty) {
+          if (value.isNotEmpty) {
             payload = payload.replaceRange(element.start + replaceOffset,
                 element.end + replaceOffset, value);
             replaceOffset += value.length - word.length;
@@ -109,9 +109,9 @@ class UnBase {
       '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   final String alpha_95 =
       " !\"#\$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-  String alphabet;
-  Map<String, int> dictionary;
-  int radix;
+  String alphabet = '';
+  Map<String, int> dictionary = {};
+  int radix = 0;
 
   UnBase(int radix) {
     this.radix = radix;
@@ -135,11 +135,12 @@ class UnBase {
   int unBase(String str) {
     var ret = 0;
 
-    if (alphabet == null) {
+    if (alphabet.isEmpty) {
       ret = int.parse(str, radix: radix);
     } else {
       for (var i = 0; i < str.length; i++) {
-        ret += pow(radix, i) * dictionary[str.substring(i, i + 1)];
+        ret += pow(radix, i).toInt() *
+            dictionary[str.substring(i, i + 1)]!.toInt();
       }
     }
     return ret;

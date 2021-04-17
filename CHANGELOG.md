@@ -1,3 +1,3 @@
-## [0.0.4] - 2021-03-26
+## [0.0.5] - 2021-04-17
 
-Update code & Clean bugs.
+- full library migration to null-safety
