@@ -123,7 +123,9 @@ class UnBase {
         alphabet = alpha_95.substring(0, radix);
       } else if (radix == 62) {
         alphabet = alpha_62;
-      } else if (radix == 95) alphabet = alpha_95;
+      } else if (radix == 95) {
+        alphabet = alpha_95;
+      }
 
       for (var i = 0; i < alphabet.length; i++) {
         dictionary[alphabet.substring(i, i + 1)] = i;

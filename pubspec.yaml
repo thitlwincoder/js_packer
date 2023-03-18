@@ -1,11 +1,10 @@
 name: js_packer
 description: Dart Package for decode Dean Edwards' JavaScript Packer.
 version: 0.0.5
-author: Thit Lwin <thitlwincoder@gmail.com>
 homepage: https://github.com/thitlwincoder/js_packer
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.19.4 <3.0.0"
 
 dev_dependencies:
-  pedantic: ^1.11.0
+  pedantic: ^1.11.1
